@@ -1,7 +1,22 @@
+/*
+The Cardo Server application is the Go version of the original idea
+written in Elixir.
+*/
+
 package main
 
-import "fmt"
+import (
+	"net/http"
+)
 
 func main() {
-	fmt.Printf("Hello, world or καλημ ρα κóσμ\n")
+	// msgBroker = NewBroker()
+	// http.HandleFunc("/update", messageHandler)
+	// http.HandleFunc("/events", timerEventSource)
+
+	http.Handle("/", http.FileServer(http.Dir("static")))
+	err := http.ListenAndServe("localhost:8888", nil)
+	if err != nil {
+		panic(err)
+	}
 }

@@ -1,0 +1,7 @@
+# This is a sample configuration file
+# Remane it to 'config.toml' to be used by the app
+
+[db]
+url = "http://localhost:8529"
+user = "user"
+pass = "pass"
