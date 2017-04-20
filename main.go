@@ -23,6 +23,7 @@ func main() {
 	// define routes
 	r := mux.NewRouter()
 	r.HandleFunc("/ping", web.PingHandler)
+	r.HandleFunc("/events", web.EventsHandler)
 	r.Handle("/", http.FileServer(http.Dir("static")))
 
 	r.HandleFunc("/add", web.CardAddHandler).
