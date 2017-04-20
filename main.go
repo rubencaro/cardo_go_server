@@ -25,6 +25,11 @@ func main() {
 	r.HandleFunc("/ping", web.PingHandler)
 	r.Handle("/", http.FileServer(http.Dir("static")))
 
+	r.HandleFunc("/add", web.CardAddHandler).
+		Methods("POST").
+		Headers("Content-Type", "application/json")
+	r.HandleFunc("/list", web.CardListHandler)
+
 	// start server
 	srv := &http.Server{
 		Handler:      r,

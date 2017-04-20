@@ -12,8 +12,8 @@ import (
 	"github.com/rubencaro/cardo_server/hlp"
 )
 
-// by now the internal fixed database
-var database driver.Database
+// Database is by now the fixed database instance
+var Database driver.Database
 
 func init() {
 	connect()
@@ -46,12 +46,13 @@ func connect() {
 		log.Fatalf("Failed to open database: %v", err)
 	}
 
-	database = db
+	Database = db
 }
 
-// Coll gets the name of the collection and returns it
+// Coll gets the name of the collection
+// and returns the driver.Collection with that name
 func Coll(colname string) driver.Collection {
-	col, err := database.Collection(nil, colname)
+	col, err := Database.Collection(nil, colname)
 	if err != nil {
 		log.Fatalf("Failed to open collection: %v", err)
 	}
