@@ -1,12 +1,14 @@
-hash: f14599870173ca144fecdbd00faab1a841e0d8ded07fde09ab2c02beb1c8c004
-updated: 2017-04-19T22:20:53.854765706+02:00
+hash: 564a212ef15b36c127a8db3c18d54368744fd1c5234bd17e2bd7c95fdba7b90a
+updated: 2017-04-20T12:30:02.991366835+02:00
 imports:
 - name: github.com/arangodb/go-driver
-  version: 3828d5bf3b851460fd709c88aa531fe97684a2c4
+  version: fe781edb79e4def12a7b75fb8e6a7ecb41d39c32
   subpackages:
   - cluster
   - http
   - util
 - name: github.com/BurntSushi/toml
   version: b26d9c308763d68093482582cea63d69be07a0f0
+- name: github.com/gorilla/mux
+  version: 392c28fe23e1c45ddba891b0320b3b5df220beea
 testImports: []
