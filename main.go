@@ -7,6 +7,8 @@ package main
 
 import (
 	"net/http"
+
+	_ "github.com/rubencaro/cardo_server/db"
 )
 
 func main() {
