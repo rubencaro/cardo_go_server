@@ -20,11 +20,14 @@ func main() {
 	r := mux.NewRouter()
 	r.HandleFunc("/ping", web.PingHandler)
 	r.HandleFunc("/events", web.EventsHandler)
-
-	r.HandleFunc("/add", web.CardAddHandler).
-		Methods("POST").
-		Headers("Content-Type", "application/json")
 	r.HandleFunc("/list", web.CardListHandler)
+
+	s := r.Methods("POST").
+		Headers("Content-Type", "application/json").
+		Subrouter()
+	s.HandleFunc("/add", web.CardAddHandler)
+	s.HandleFunc("/update", web.CardAddHandler)
+
 	r.PathPrefix("/").Handler(http.FileServer(http.Dir("static")))
 
 	// start server
