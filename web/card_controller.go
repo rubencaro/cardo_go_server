@@ -14,14 +14,14 @@ import (
 
 // CardAddHandler handles the creation of new cards
 func CardAddHandler(w http.ResponseWriter, r *http.Request) {
-	vars := mux.Vars(r)
-	log.Printf("Data read from Vars: %v\n", vars)
+	// vars := mux.Vars(r)
+	// log.Printf("Data read from Vars: %v\n", vars)
 
-	err1 := r.ParseForm()
-	if err1 != nil {
-		log.Println(err1)
-	}
-	log.Printf("Data read from regular POST: %v\n", r.Form)
+	// err1 := r.ParseForm()
+	// if err1 != nil {
+	// 	log.Println(err1)
+	// }
+	// log.Printf("Data read from regular POST: %v\n", r.Form)
 
 	var t map[string]interface{}
 	err2 := json.NewDecoder(r.Body).Decode(&t)
@@ -30,7 +30,13 @@ func CardAddHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	log.Printf("Data read from JSON body: %v\n", t)
 
-	Messages <- fmt.Sprintf("%v", t["msg"])
+	ctx := context.Background()
+	_, err := db.Coll("cardo_card_collection").CreateDocument(ctx, t)
+	if err != nil {
+		log.Fatalf("Failed to create document: %v\n%v", t, err)
+	}
+
+	Messages <- fmt.Sprintf("Created document: %v", t)
 	w.Write([]byte("OKey"))
 }
 
@@ -54,8 +60,8 @@ func CardListHandler(w http.ResponseWriter, r *http.Request) {
 		} else if err != nil {
 			log.Printf("Error reading from cursor: %v\n\nMetadata: %v", err, meta)
 		}
-		log.Println(doc)
+		fmt.Fprintf(w, "%v", doc)
 	}
 
-	w.Write([]byte("OKey"))
+	w.Write([]byte(""))
 }
