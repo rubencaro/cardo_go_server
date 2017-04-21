@@ -13,29 +13,37 @@ var Messages = make(chan string)
 // EventsHandler handles the connection and dispatching
 // of Card related events to the client
 func EventsHandler(w http.ResponseWriter, r *http.Request) {
+
+	w.Header().Set("Content-Type", "text/event-stream; charset=utf-8")
+	w.Header().Set("Cache-Control", "no-cache, no-store, must-revalidate")
+	w.Header().Set("Connection", "keep-alive")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.WriteHeader(http.StatusOK)
+
 	f, ok := w.(http.Flusher)
 	if !ok {
 		http.Error(w, "cannot stream", http.StatusInternalServerError)
 		return
 	}
 
-	w.Header().Set("Content-Type", "text/event-stream")
-	w.Header().Set("Cache-Control", "no-cache")
-	w.Header().Set("Connection", "keep-alive")
-
 	cn, ok := w.(http.CloseNotifier)
 	if !ok {
-		http.Error(w, "cannot stream", http.StatusInternalServerError)
+		http.Error(w, "cannot notify closure", http.StatusInternalServerError)
 		return
 	}
+
+	f.Flush()
+
+	log.Println("SSE connected")
 
 	for {
 		select {
 		case <-cn.CloseNotify():
-			log.Println("done: closed connection")
+			log.Println("SSE closed connection")
 			return
 		case msg := <-Messages:
 			fmt.Fprintf(w, "data: %s\n\n", msg)
+			log.Printf("SSE sent: %s", msg)
 			f.Flush()
 		}
 	}

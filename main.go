@@ -16,20 +16,16 @@ import (
 )
 
 func main() {
-	// msgBroker = NewBroker()
-	// http.HandleFunc("/update", messageHandler)
-	// http.HandleFunc("/events", timerEventSource)
-
 	// define routes
 	r := mux.NewRouter()
 	r.HandleFunc("/ping", web.PingHandler)
 	r.HandleFunc("/events", web.EventsHandler)
-	r.Handle("/", http.FileServer(http.Dir("static")))
 
 	r.HandleFunc("/add", web.CardAddHandler).
 		Methods("POST").
 		Headers("Content-Type", "application/json")
 	r.HandleFunc("/list", web.CardListHandler)
+	r.PathPrefix("/").Handler(http.FileServer(http.Dir("static")))
 
 	// start server
 	srv := &http.Server{

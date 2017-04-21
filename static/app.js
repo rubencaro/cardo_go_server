@@ -14,6 +14,15 @@ source.onmessage = function (event) {
   var div = document.createElement("div");
   div.appendChild(txt);
 
-  var first = document.body.firstChild;
-  document.body.insertBefore(div, first);
+  var first = document.getElementById("messages").firstChild;
+  document.getElementById("messages").insertBefore(div, first);
 };
+
+var add = function () {
+  var body = { "msg": document.getElementById("text").value };
+  fetch("/add", {
+    "method": "POST",
+    "headers": { "content-type": "application/json" },
+    "body": JSON.stringify(body)
+  });
+}
